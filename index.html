@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網頁程式設計作品集 | My Portfolio Mission</title>
+    <style>
+        /* ==========================================
+           1. 全局變數與基礎設定 (Cute Star & Glass Style)
+           ========================================== */
+        :root {
+            --bg-grad-1: #1e1b4b;
+            --bg-grad-2: #312e81;
+            --bg-grad-3: #4c1d95;
+            --accent-star: #fbbf24;
+            --accent-star-glow: rgba(251, 191, 36, 0.6);
+            --pink-glow: #f472b6;
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: rgba(0, 0, 0, 0.37);
+            --text-color: #ffffff;
+            --text-sub: #cbd5e1;
+            --locked-bg: rgba(255, 255, 255, 0.05);
+            --locked-border: rgba(255, 255, 255, 0.1);
+            --locked-text: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, "微軟正黑體";
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 動態背景星空漸變動畫 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 背景可愛漂浮星星 */
+        .star-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            color: var(--accent-star);
+            opacity: 0.7;
+            animation: twinkle 3s infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkle {
+            0% { transform: scale(0.8) rotate(0deg); opacity: 0.3; }
+            100% { transform: scale(1.3) rotate(15deg); opacity: 0.9; filter: drop-shadow(0 0 8px var(--accent-star)); }
+        }
+
+        /* ==========================================
+           2. 主容器毛玻璃風格 (Glassmorphism Container)
+           ========================================== */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 900px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            text-align: center;
+        }
+
+        /* 可愛裝飾星星 Icon */
+        .cute-star-badge {
+            display: inline-block;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ==========================================
+           3. 個人大頭貼與名字資訊
+           ========================================== */
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 15px auto;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px var(--accent-star-glow), 0 0 35px var(--pink-glow);
+            transition: transform 0.4s ease;
+        }
+
+        .avatar-wrapper:hover .avatar {
+            transform: scale(1.08) rotate(5deg);
+        }
+
+        .avatar-star-ring {
+            position: absolute;
+            top: -10px;
+            right: -5px;
+            font-size: 1.8rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 6px;
+        }
+
+        .profile-title {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* 闖關成就進度條 */
+        .progress-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            color: var(--accent-star);
+        }
+
+        /* ==========================================
+           4. 16 個按鈕網格卡片 (Button Grid)
+           ========================================== */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .btn-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 90px;
+            border-radius: 18px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            padding: 10px;
+            user-select: none;
+        }
+
+        /* 解鎖按鈕樣式 (Unlocked) */
+        .btn-unlocked {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            color: var(--text-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .btn-unlocked .btn-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #ffffff;
+            margin-top: 4px;
+        }
+
+        .btn-unlocked .btn-tag {
+            font-size: 0.75rem;
+            color: var(--accent-star);
+            background: rgba(251, 191, 36, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* 已解鎖 Hover 炫彩酷炫動畫 */
+        .btn-unlocked:hover {
+            transform: translateY(-6px) scale(1.03);
+            background: rgba(255, 255, 255, 0.28);
+            border-color: var(--accent-star);
+            box-shadow: 0 10px 25px var(--accent-star-glow), 0 0 15px rgba(244, 114, 182, 0.4);
+        }
+
+        .btn-unlocked:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* 光芒劃過效果 (Shimmer Effect) */
+        .btn-unlocked::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: all 0.6s ease;
+        }
+
+        .btn-unlocked:hover::before {
+            left: 140%;
+        }
+
+        /* 未解鎖按鈕樣式 (Locked) */
+        .btn-locked {
+            background: var(--locked-bg);
+            border: 1px dashed var(--locked-border);
+            color: var(--locked-text);
+            cursor: not-allowed;
+            filter: grayscale(80%);
+            opacity: 0.6;
+        }
+
+        .btn-locked .btn-title {
+            font-size: 0.85rem;
+            color: var(--locked-text);
+            margin-top: 4px;
+        }
+
+        .btn-locked .lock-icon {
+            font-size: 1.2rem;
+        }
+
+        /* 微弱 Hover 動畫給鎖定狀態 */
+        .btn-locked:hover {
+            opacity: 0.8;
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ==========================================
+           5. 響應式手機版適配 (Responsive Design)
+           ========================================== */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+                border-radius: 20px;
+            }
+
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr); /* 手機版雙欄排列 */
+                gap: 10px;
+            }
+
+            .profile-name {
+                font-size: 1.6rem;
+            }
+
+            .avatar-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .btn-card {
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景可愛星空氛圍 -->
+    <div class="star-bg">
+        <span class="star" style="top: 10%; left: 15%; font-size: 1.2rem; animation-delay: 0s;">⭐</span>
+        <span class="star" style="top: 20%; left: 80%; font-size: 2rem; animation-delay: 1s;">✨</span>
+        <span class="star" style="top: 70%; left: 10%; font-size: 1.8rem; animation-delay: 0.5s;">🌟</span>
+        <span class="star" style="top: 85%; left: 85%; font-size: 1.5rem; animation-delay: 1.5s;">⭐</span>
+        <span class="star" style="top: 40%; left: 90%; font-size: 1.1rem; animation-delay: 2s;">✨</span>
+        <span class="star" style="top: 60%; left: 5%; font-size: 1.4rem; animation-delay: 2.5s;">⭐</span>
+    </div>
+
+    <!-- 毛玻璃主入口卡片 -->
+    <div class="container">
+        
+        <!-- 個人頭像與個人資料區 -->
+        <div class="profile-section">
+            <div class="avatar-wrapper">
+                <!-- 預設假大頭貼，之後可換成自己的照片連結 -->
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=StarStudent" alt="大頭貼" class="avatar">
+                <span class="avatar-star-ring">💫</span>
+            </div>
+            
+            <h1 class="profile-name">
+                <span class="cute-star-badge">✨</span> 你的名字 <span class="cute-star-badge">✨</span>
+            </h1>
+            <p class="profile-title">網頁程式設計作品集入口站</p>
+
+            <!-- 任務闖關進度 -->
+            <div class="progress-box">
+                <span>🏆 闖關進度：<strong>2 / 16</strong> 解鎖</span>
+            </div>
+        </div>
+
+        <!-- 16 個按鈕網格選單 -->
+        <div class="grid-container">
+
+            <!-- 按鈕 1 (已解鎖) -->
+            <a href="w1/index.html" class="btn-card btn-unlocked">
+                <span class="btn-tag">Week 01</span>
+                <span class="btn-title">數位名片 🚀</span>
+            </a>
+
+            <!-- 按鈕 2 (已解鎖) -->
+            <a href="w2/index.html" class="btn-card btn-unlocked">
+                <span class="btn-tag">Week 02</span>
+                <span class="btn-title">今天吃甚麼? 🍕</span>
+            </a>
+
+            <!-- 按鈕 3 ~ 16 (未解鎖狀態) -->
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 3 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 4 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 5 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 6 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 7 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 8 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 9 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 10 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 11 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 12 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 13 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 14 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 15 - 尚未解鎖</span>
+            </a>
+
+            <a class="btn-card btn-locked">
+                <span class="lock-icon">🔒</span>
+                <span class="btn-title">Week 16 - 尚未解鎖</span>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
