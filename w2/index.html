@@ -8,44 +8,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
-    <!-- 連結外部 CSS 樣式檔 -->
-    <link rel="stylesheet" href="style.css">
-    <!-- 載入外部 JS 腳本 -->
-    <script src="script.js" defer></script>
-</head>
-<body>
+    
+    <style>
+        /* --- 全局設定 --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <!-- 繽紛點點裝飾背景 -->
-    <div class="background-dots"></div>
+        body {
+            font-family: 'Zen Maru Gothic', 'Fredoka', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #0c4a6e;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    <div class="card-container">
-        <!-- 主標題區塊 -->
-        <div class="header">
-            <span class="badge">🎲 命運抽籤機</span>
-            <h1 id="main-title">{今天吃什麼?}</h1>
-        </div>
-
-        <!-- 照片顯示卡片區塊 (預設隱藏) -->
-        <div id="image-card" class="image-card hidden">
-            <div class="polaroid">
-                <img id="food-image" src="" alt="美食圖片">
-                <p id="food-tag" class="food-tag">美味登場！</p>
-            </div>
-        </div>
-
-        <!-- 按鈕區塊 -->
-        <div class="actions">
-            <!-- 抽籤主按鈕 -->
-            <button id="draw-btn" class="btn btn-primary">
-                <span class="btn-icon">✨</span> 【點我抽籤】
-            </button>
-
-            <!-- 馬上出發按鈕 (預設隱藏) -->
-            <a id="map-btn" href="#" target="_blank" class="btn btn-map hidden">
-                <span class="btn-icon">🚀</span> 馬上出發 (Google Map)
-            </a>
-        </div>
-    </div>
-
-</body>
-</html>
+        /* 繽紛背景圓點裝飾 */
+        .background-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#38bdf8 15%, transparent 16%), radial-gradient(#60a5fa 15%, transparent 16
