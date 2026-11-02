@@ -45,4 +45,305 @@
         .card-container {
             position: relative;
             z-index: 1;
-            background: rgba(255, 255,
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 4px solid #38bdf8;
+            border-radius: 32px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(12, 74, 110, 0.15),
+                        0 8px 0px #0284c7;
+            transition: transform 0.3s ease;
+        }
+
+        /* 標籤小按鈕 */
+        .badge {
+            display: inline-block;
+            background-color: #e0f2fe;
+            color: #0284c7;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            border: 2px solid #38bdf8;
+        }
+
+        /* 主標題 */
+        #main-title {
+            font-size: 2.2rem;
+            color: #0369a1;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+            text-shadow: 2px 2px 0px #e0f2fe;
+        }
+
+        /* 拍立得風格照片卡 */
+        .image-card {
+            margin: 20px 0;
+            perspective: 1000px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 18px 12px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #bae6fd;
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .food-tag {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0284c7;
+        }
+
+        /* 按鈕群組 */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* 通用按鈕樣式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 28px;
+            font-size: 1.25rem;
+            font-weight: 900;
+            text-decoration: none;
+            border-radius: 50px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        /* 主抽籤按鈕 (繽紛藍) */
+        .btn-primary {
+            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+            color: white;
+            box-shadow: 0 6px 0px #0369a1, 0 10px 20px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px #0369a1, 0 12px 22px rgba(2, 132, 199, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px #0369a1;
+        }
+
+        /* 馬上出發按鈕 (亮麗綠) */
+        .btn-map {
+            background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 6px 0px #047857, 0 10px 20px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-map:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px #047857, 0 12px 22px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-map:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px #047857;
+        }
+
+        .btn-icon {
+            margin-right: 8px;
+        }
+
+        /* 隱藏元素用 */
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- 動畫效果 --- */
+
+        /* 1. 抽籤時的快閃淡入動畫 */
+        .flash-anim {
+            animation: flash 0.1s ease-in-out;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0.3; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* 2. 最終結果的Q彈生動彈跳動畫 */
+        .bounce-pop {
+            animation: bouncePop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes bouncePop {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            50% {
+                transform: scale(1.15) rotate(5deg);
+            }
+            70% {
+                transform: scale(0.95) rotate(-3deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 繽紛點點裝飾背景 -->
+    <div class="background-dots"></div>
+
+    <div class="card-container">
+        <!-- 主標題區塊 -->
+        <div class="header">
+            <span class="badge">🎲 命運抽籤機</span>
+            <h1 id="main-title">{今天吃什麼?}</h1>
+        </div>
+
+        <!-- 照片顯示卡片區塊 (預設隱藏) -->
+        <div id="image-card" class="image-card hidden">
+            <div class="polaroid">
+                <img id="food-image" src="" alt="美食圖片">
+                <p id="food-tag" class="food-tag">美味登場！</p>
+            </div>
+        </div>
+
+        <!-- 按鈕區塊 -->
+        <div class="actions">
+            <!-- 抽籤主按鈕 -->
+            <button id="draw-btn" class="btn btn-primary">
+                <span class="btn-icon">✨</span> 【點我抽籤】
+            </button>
+
+            <!-- 馬上出發按鈕 (預設隱藏) -->
+            <a id="map-btn" href="#" target="_blank" class="btn btn-map hidden">
+                <span class="btn-icon">🚀</span> 馬上出發 (Google Map)
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 確保 DOM 載入完成才執行邏輯
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. 設定美食選項資料庫
+            const foodList = [
+                {
+                    name: "日本料理 🍣",
+                    image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    name: "拉麵 🍜",
+                    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    name: "鴨肉飯 🦆",
+                    image: "https://images.unsplash.com/photo-1514944288352-fffac99f0bdf?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    name: "外省麵 🥢",
+                    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    name: "咖哩飯 🍛",
+                    image: "https://images.unsplash.com/photo-1631292784640-2b24be784d5d?auto=format&fit=crop&w=600&q=80"
+                }
+            ];
+
+            // 2. 取得 DOM 元素
+            const mainTitle = document.getElementById('main-title');
+            const drawBtn = document.getElementById('draw-btn');
+            const mapBtn = document.getElementById('map-btn');
+            const imageCard = document.getElementById('image-card');
+            const foodImage = document.getElementById('food-image');
+            const foodTag = document.getElementById('food-tag');
+
+            let isRolling = false; // 防連點狀態標記
+
+            // 3. 綁定按鈕點擊事件
+            drawBtn.addEventListener('click', () => {
+                if (isRolling) return;
+                isRolling = true;
+
+                // 重置 UI 與動畫
+                mainTitle.classList.remove('bounce-pop', 'flash-anim');
+                imageCard.classList.add('hidden');
+                mapBtn.classList.add('hidden');
+
+                let counter = 0;
+                const totalRolls = 20; // 滾動輪播次數
+                const speed = 80;      // 滾動速度 (毫秒)
+
+                // 開啟滾動輪播效果
+                const timer = setInterval(() => {
+                    const tempIndex = Math.floor(Math.random() * foodList.length);
+                    mainTitle.textContent = foodList[tempIndex].name;
+                    
+                    mainTitle.classList.remove('flash-anim');
+                    void mainTitle.offsetWidth; // 強制重繪 (Trigger reflow)
+                    mainTitle.classList.add('flash-anim');
+
+                    counter++;
+
+                    // 輪播結束，決定最終結果
+                    if (counter >= totalRolls) {
+                        clearInterval(timer);
+
+                        const finalIndex = Math.floor(Math.random() * foodList.length);
+                        const selectedFood = foodList[finalIndex];
+
+                        // 替換大標題並套用 Q 彈生動彈跳動畫
+                        mainTitle.textContent = selectedFood.name;
+                        mainTitle.classList.remove('flash-anim');
+                        mainTitle.classList.add('bounce-pop');
+
+                        // 更新並顯示照片
+                        foodImage.src = selectedFood.image;
+                        foodTag.textContent = `今天就吃：${selectedFood.name}`;
+                        imageCard.classList.remove('hidden');
+
+                        // 設定 Google Map 搜尋連結
+                        const cleanSearchName = selectedFood.name.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '');
+                        mapBtn.href = `https://www.google.com/maps/search/${encodeURIComponent(cleanSearchName)}`;
+                        mapBtn.classList.remove('hidden');
+
+                        isRolling = false;
+                    }
+                }, speed);
+            });
+
+        });
+    </script>
+</body>
+</html>
